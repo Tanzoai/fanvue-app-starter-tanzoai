@@ -35,7 +35,8 @@ export async function setSession(payload: SessionPayload) {
   cookieStore.set(env.SESSION_COOKIE_NAME, jwt, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
+    // Allow third-party redirects (OAuth) to preserve session cookie in production.
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
     path: "/",
     maxAge: 60 * 60 * 24 * 30,
   });
@@ -73,7 +74,7 @@ export async function addAccountToMultiSession(account: Omit<MultiAccountSession
     cookieStore.set('fanvue_multi_accounts', accountsJson, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       path: "/",
       maxAge: 60 * 60 * 24 * 30, // 30 days
     });
@@ -103,7 +104,7 @@ export async function removeAccountFromMultiSession(accountId: string) {
   cookieStore.set('fanvue_multi_accounts', accountsJson, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
     path: "/",
     maxAge: 60 * 60 * 24 * 30,
   });
