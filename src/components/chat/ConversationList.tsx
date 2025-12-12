@@ -30,9 +30,10 @@ export default function ConversationList({
           <p className="text-gray-400">No conversations yet</p>
         </GlassCard>
       ) : (
-        conversations.map((conversation, index) => (
+        // Debug: log conversations shape to help identify missing ids
+        (console.log('Conversations:', conversations), conversations).map((conversation, index) => (
           <GlassCard
-            key={conversation.id || `conversation-${index}`}
+            key={conversation.id || (conversation as any).uuid || `conversation-${index}`}
             className={`p-4 cursor-pointer transition-all ${
               selectedId === conversation.id
                 ? 'bg-blue-500/20 border-blue-500/50'
