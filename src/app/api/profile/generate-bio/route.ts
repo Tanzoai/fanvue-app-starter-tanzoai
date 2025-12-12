@@ -132,34 +132,34 @@ export async function POST(request: NextRequest) {
 function generateMockBio(template: string, keywords?: string[]): string {
   const bios: Record<string, string[]> = {
     sexy: [
-      'Your favorite fantasy is waiting... 🔥 DM me for exclusive content 💋',
-      'Let me be your secret obsession 😈 Custom content available 🔞',
-      'Spice up your day with me 🌶️ Subscribe for the full experience 💕',
+      "Your favorite fantasy is waiting... 🔥 DM me for exclusive content 💋",
+      "Let me be your secret obsession 😈 Custom content available 🔞",
+      "Spice up your day with me 🌶️ Subscribe for the full experience 💕",
     ],
     romantic: [
-      'Let me make you feel special 💕 Exclusive intimate moments await 🌹',
-      'Your perfect escape from reality 💖 Sweet & spicy content inside 😊',
-      'Romance meets desire 🌙 Join me for something beautiful 💫',
+      "Let me make you feel special 💕 Exclusive intimate moments await 🌹",
+      "Your perfect escape from reality 💖 Sweet & spicy content inside 😊",
+      "Romance meets desire 🌙 Join me for something beautiful 💫",
     ],
     mysterious: [
-      'Curious what's behind the curtain? 🌙 Find out inside... 🔮',
-      'Some secrets are worth discovering 🖤 Are you brave enough? 🔓',
-      'Mystery wrapped in desire 🌌 Unlock exclusive access 🗝️',
+      "Curious what's behind the curtain? 🌙 Find out inside... 🔮",
+      "Some secrets are worth discovering 🖤 Are you brave enough? 🔓",
+      "Mystery wrapped in desire 🌌 Unlock exclusive access 🗝️",
     ],
     playful: [
-      'Come play with me 😈 Fun & flirty content daily 🎮',
-      'Life's too short to be boring 🎉 Let's have some fun together 💃',
-      'Your favorite tease 😘 Premium content & customs available 🎁',
+      "Come play with me 😈 Fun & flirty content daily 🎮",
+      "Life's too short to be boring 🎉 Let's have some fun together 💃",
+      "Your favorite tease 😘 Premium content & customs available 🎁",
     ],
     confident: [
-      'I know what you need 👑 Subscribe and obey 💅',
-      'Bow down to your queen 👸 Exclusive content for loyal subjects 💎',
-      'Confidence looks good on me 💋 Can you handle it? 🔥',
+      "I know what you need 👑 Subscribe and obey 💅",
+      "Bow down to your queen 👸 Exclusive content for loyal subjects 💎",
+      "Confidence looks good on me 💋 Can you handle it? 🔥",
     ],
     girlfriend: [
-      'Miss me? I miss you too 💕 Let's spend time together 🥰',
-      'Your virtual girlfriend awaits 💖 Personalized content & chats 😊',
-      'I'm all yours, babe 💗 Exclusive GFE content inside 💌',
+      "Miss me? I miss you too 💕 Let's spend time together 🥰",
+      "Your virtual girlfriend awaits 💖 Personalized content & chats 😊",
+      "I'm all yours, babe 💗 Exclusive GFE content inside 💌",
     ],
   };
 
