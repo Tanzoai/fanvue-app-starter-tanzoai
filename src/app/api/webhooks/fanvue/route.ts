@@ -42,12 +42,21 @@ function verifyWebhookSignature(
   signature: string,
   secret: string
 ): boolean {
+  if (!signature) return false;
+  // Support headers that include the algorithm prefix like "sha256=<hex>"
+  const normalized = signature.startsWith('sha256=') ? signature.split('=')[1] : signature;
   const hmac = crypto.createHmac('sha256', secret);
   const digest = hmac.update(payload).digest('hex');
-  return crypto.timingSafeEqual(
-    Buffer.from(signature),
-    Buffer.from(digest)
-  );
+  try {
+    const sigBuf = Buffer.from(normalized, 'hex');
+    const digestBuf = Buffer.from(digest, 'hex');
+    if (sigBuf.length !== digestBuf.length) return false;
+    return crypto.timingSafeEqual(sigBuf, digestBuf);
+  } catch (e) {
+    // If signature is not valid hex, fail verification
+    console.error('[WEBHOOK] Signature parse error:', e);
+    return false;
+  }
 }
 
 /**
