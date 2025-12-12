@@ -11,6 +11,16 @@ type SessionPayload = {
   idToken?: string;
 };
 
+// Multi-account session type
+type MultiAccountSession = {
+  accountId: string;
+  accountName: string;
+  accountHandle: string;
+  avatarUrl?: string;
+  payload: SessionPayload;
+  color: string;
+};
+
 const encoder = new TextEncoder();
 const secretKey = encoder.encode(env.SESSION_SECRET);
 
@@ -48,4 +58,65 @@ export async function clearSession() {
   cookieStore.delete(env.SESSION_COOKIE_NAME);
 }
 
+// Multi-account functions
+export async function addAccountToMultiSession(account: Omit<MultiAccountSession, 'payload'>, payload: SessionPayload) {
+  const cookieStore = await cookies();
+  const existingAccounts = await getMultiAccounts();
+  
+  // Check if account already exists
+  const accountExists = existingAccounts.some(acc => acc.accountId === account.accountId);
+  
+  if (!accountExists) {
+    const updatedAccounts = [...existingAccounts, { ...account, payload }];
+    const accountsJson = JSON.stringify(updatedAccounts);
+    
+    cookieStore.set('fanvue_multi_accounts', accountsJson, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
+      maxAge: 60 * 60 * 24 * 30, // 30 days
+    });
+  }
+}
 
+export async function getMultiAccounts(): Promise<MultiAccountSession[]> {
+  const cookieStore = await cookies();
+  const accountsJson = cookieStore.get('fanvue_multi_accounts')?.value;
+  
+  if (!accountsJson) return [];
+  
+  try {
+    return JSON.parse(accountsJson) as MultiAccountSession[];
+  } catch {
+    return [];
+  }
+}
+
+export async function removeAccountFromMultiSession(accountId: string) {
+  const cookieStore = await cookies();
+  const existingAccounts = await getMultiAccounts();
+  
+  const updatedAccounts = existingAccounts.filter(account => account.accountId !== accountId);
+  const accountsJson = JSON.stringify(updatedAccounts);
+  
+  cookieStore.set('fanvue_multi_accounts', accountsJson, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    path: "/",
+    maxAge: 60 * 60 * 24 * 30,
+  });
+}
+
+export async function setActiveAccount(accountId: string) {
+  const accounts = await getMultiAccounts();
+  const account = accounts.find(acc => acc.accountId === accountId);
+  
+  if (account) {
+    await setSession(account.payload);
+    return account;
+  }
+  
+  return null;
+}
